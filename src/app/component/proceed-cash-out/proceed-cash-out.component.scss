@@ -1,0 +1,121 @@
+#card {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: 2rem;
+  right: 8px;
+
+  .card {
+    border-style: dashed;
+    border-color: black;
+    border-radius: 10px;
+    padding-bottom: 4rem;
+  }
+  .bi-x-circle {
+    font-family: "Poppins";
+    position: relative;
+    z-index: 1;
+    bottom: 0.6px;
+    left: 20rem;
+    font-size: 25px;
+    font-weight: 900;
+    cursor: pointer;
+  }
+  .card-header {
+    background-color: white;
+    border-bottom-style: dashed;
+    border-color: black;
+    padding-bottom: 4rem;
+
+    strong {
+      font-family: "Oswald", sans-serif;
+      display: flex;
+      justify-content: center;
+      color: #002b43;
+      font-weight: 900;
+      position: relative;
+      font-size: 48px;
+      top: 26px;
+
+      span {
+        font-size: 25px;
+        position: relative;
+        top: 10px;
+      }
+    }
+  }
+  form {
+    position: relative;
+    top: 65px;
+    select {
+      font-family: "Poppins";
+      border-style: dashed;
+      background-color: #e9ecef;
+      text-align: center;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+    input {
+      margin-top: 20px;
+      border-radius: 8px;
+      border-style: dashed;
+    }
+  }
+  .btn {
+    font-family: "Poppins";
+    position: relative;
+    top: 4.3rem;
+    background-color: #101010;
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    font-size: 10px;
+    width: 16.5rem;
+    left: 2px;
+  }
+}
+
+.bi-arrow-right-short {
+  position: relative;
+  top: 83px;
+  font-size: 25px;
+  color: white;
+  left: 14.4rem;
+  font-weight: bold;
+}
+
+input::placeholder {
+  text-align: center;
+  line-height: 50px;
+  opacity: 0.5;
+}
+
+.d-grid {
+  position: relative;
+  top: 43px;
+}
+
+// @media (max-width: 576px) {
+//   .bi-x-circle {
+//     display: none;
+//   }
+//   .list-group {
+//     display: flex;
+//     justify-content: end;
+//     align-items: flex-end;
+//     .mobile-cancel {
+//       display: flex;
+//       text-align: center;
+//       // width: 10rem;
+//       background-color: transparent;
+//       border-color: #f31853;
+//       color: #f31853;
+//       border-style: dashed;
+//     }
+//   }
+// }
+// @media (min-width: 576.1px) {
+//   .list-group {
+//     display: none;
+//   }
+// }
