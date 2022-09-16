@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { BUSINESS_DATA_KEY, TRANSFER_DATA_KEY } from 'src/app/constant/constants';
 import { BusinessService } from 'src/app/services/business.service';
@@ -31,13 +31,19 @@ export class ProceedCashOutComponent implements OnInit {
   businessLogo: string;
   constructor(
     private router: Router,
-    private businessService: BusinessService
-  ) {}
+    private businessService: BusinessService,
+    private route: ActivatedRoute
+  ) {
+    const sessionData = sessionStorage.getItem(BUSINESS_DATA_KEY)
+    this.businessTransactionData = sessionData === 'NULL' ? undefined : JSON.parse(sessionData);
+    const transferData = sessionStorage.getItem(TRANSFER_DATA_KEY)
+    this.businessTransactionData = transferData === 'NULL' ? undefined : JSON.parse(transferData);
+
+  }
 
   ngOnInit(): void {
-    sessionStorage.removeItem(TRANSFER_DATA_KEY);
-    this.getUrlParams(window.location.href);
   }
+
 
   isValidePhoneInput(phoneNumber: string) {
     if (phoneNumber === undefined) {
@@ -52,7 +58,7 @@ export class ProceedCashOutComponent implements OnInit {
     }
   }
 
-  // onProceed(form: NgForm) {
+    // onProceed(form: NgForm) {
   //   const telInputPlaceholderInputValue = document
   //     .getElementsByTagName('input')[0]
   //     .getAttribute('placeholder');
@@ -102,44 +108,6 @@ export class ProceedCashOutComponent implements OnInit {
   //     this.errorMessage = 'Invalid Phone number';
   //   }
   // }
-
-  getBusinessData() {
-    this.businessService
-      .getBusinessDetails(
-        this.businessTransactionData?.user_id)
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((businessData) => {
-        this.businessData = businessData;
-        this.businessLogo =
-          this.businessData.business_logo === null
-            ? 'assets/checkout/profilPhotoAnimation.gif'
-            : `https://noworri.com/api/public/uploads/company/business/${this.businessData.business_logo}`;
-
-        sessionStorage.setItem(
-          BUSINESS_DATA_KEY,
-          JSON.stringify(this.businessData)
-        );
-      });
-  }
-
-  getUrlParams(url: string) {
-    const params = new URL(url).searchParams;
-    const items = params.get('items');
-    this.checkoutItemsData = JSON.parse(`${items}`);
-    this.user_api_key = params.get('credentials') as string;
-    this.cancelUrl = params.get('cancel_url') as string;
-    this.businessTransactionData = {
-      user_id: params.get('user_id') as string,
-      apiKey: params.get('user_id') as string,
-      currency: params.get('currency') as string,
-      amount: +params.get('amount'),
-      callback_url: params.get('callback_url') as string,
-      cancel_url: params.get('cancel_url') as string,
-      order_id: params.get('order_id') as string,
-    };
-    sessionStorage.setItem(TRANSFER_DATA_KEY, JSON.stringify(this.businessTransactionData));
-    this.getBusinessData();
-  }
 
   onProceedCashOut() {
     this.router.navigate(['allow']);

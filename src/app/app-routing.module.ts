@@ -10,6 +10,11 @@ import { VodaphoneViewComponent } from './component/vodaphone-view/vodaphone-vie
 const routes: Routes = [
   {
     path: '',
+    redirectTo: 'phone_number',
+    pathMatch: 'full'
+  },
+  {
+    path: 'phone_number',
     component: ProceedCashOutComponent,
   },
   {
