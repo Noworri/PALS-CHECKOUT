@@ -1,21 +1,16 @@
-<div class="header">
-  <div>
-    <img src="assets\images\logo.png" alt="" />
-    <span>Federal Landscaping</span>
-  </div>
-</div>
+<app-header></app-header>
 
 <div id="card">
   <div class="card border-success mb-3" style="max-width: 20rem">
     <div class="card-header bg-transparent border-dashed">
-      <strong>$1,820.<span>00</span> </strong>
-      <p>You're paying with MTN - 0586550200</p>
+      <strong>{{ collectionData?.amount }}<span>{{ collectionData?.currency }}</span> </strong>
+      <p>You're paying with {{ collectionData?.operator.toUpperCase() }} - {{ collectionData?.phone_no }}</p>
     </div>
 
     <div class="card-body">
       <h6>
         You will receive a prompt notification to authorize the payment with
-        your PIN if you didn't receive the prompt notification, kindly :
+        your PIN. If you didn't receive the prompt notification, kindly :
       </h6>
       <div class="stepper d-flex flex-column mt-5 ml-2">
         <div class="d-flex mb-1">
@@ -48,8 +43,8 @@
 
       <ol class="list-group list-group">
         <li class="list-group-item">
-          After you authorize the payment with your PIN click on this bottom for
-          your payment to be verified
+          After you authorize the payment with your PIN, please click on this bottom for
+          your payment to be verified.
         </li>
       </ol>
 

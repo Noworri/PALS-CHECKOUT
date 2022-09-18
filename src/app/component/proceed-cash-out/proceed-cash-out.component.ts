@@ -1,8 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
-import { BUSINESS_DATA_KEY, TRANSFER_DATA_KEY } from 'src/app/constant/constants';
+import { Subject, take, takeUntil } from 'rxjs';
+import {
+  BusinessTransactionData,
+  BUSINESS_DATA_KEY,
+  CollectionData,
+  COLLECTION_DATA_KEY,
+  COUNTRY_DATA,
+  TRANSFER_DATA_KEY,
+} from 'src/app/constant/constants';
 import { BusinessService } from 'src/app/services/business.service';
 
 @Component({
@@ -10,40 +22,107 @@ import { BusinessService } from 'src/app/services/business.service';
   templateUrl: './proceed-cash-out.component.html',
   styleUrls: ['./proceed-cash-out.component.scss'],
 })
-
 export class ProceedCashOutComponent implements OnInit {
   unsubscribe$ = new Subject();
   form: FormGroup;
   checkoutItemsData: any;
   user_api_key: string;
   cancelUrl: string;
-  businessTransactionData: {
-    user_id: string;
-    amount: number;
-    currency: string;
-    callback_url: string;
-    cancel_url: string;
-    order_id: string;
-    apiKey: string;
-  };
+  businessTransactionData: BusinessTransactionData;
   isValidInputType: boolean;
   businessData: any;
   businessLogo: string;
+  phoneNumberValidationPattern = /^[0-9]{0,15}$/;
+  networkProviders: any[];
+  maxLength: number;
+  placeHolder: string;
+  module_id: number;
+  countryData = COUNTRY_DATA;
+  moduleData: any;
+  credentials: string;
+  collectionData: CollectionData;
+
   constructor(
     private router: Router,
     private businessService: BusinessService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder
   ) {
-    const sessionData = sessionStorage.getItem(BUSINESS_DATA_KEY)
-    this.businessTransactionData = sessionData === 'NULL' ? undefined : JSON.parse(sessionData);
-    const transferData = sessionStorage.getItem(TRANSFER_DATA_KEY)
-    this.businessTransactionData = transferData === 'NULL' ? undefined : JSON.parse(transferData);
+    const sessionData = sessionStorage.getItem(BUSINESS_DATA_KEY);
+    this.businessData =
+      sessionData === null ? undefined : JSON.parse(sessionData);
+    const transferData = sessionStorage.getItem(TRANSFER_DATA_KEY);
+    this.businessTransactionData =
+      transferData === null ? undefined : JSON.parse(transferData);
+      this.networkProviders = this.countryData['GH'].operators
 
   }
 
   ngOnInit(): void {
+    if(this.businessData) {
+      this.credentials = `${this.businessData.api_secret_key_live}:${this.businessData.api_public_key_live}`;
+    // this.getModulesData(this.credentials);
+    }
+
+    this.form = this.formBuilder.group({
+      operator: [''],
+      phone_no: [
+        '',
+        [
+          // Validators.pattern(this.phoneNumberValidationPattern),
+          Validators.required,
+          Validators.min(8),
+        ],
+      ],
+    });
+
+    if (this.businessTransactionData?.country) {
+      this.setForm(this.businessTransactionData?.country);
+    }
+
   }
 
+  getModulesData(credentials) {
+    this.businessService
+      .getModulesData(credentials)
+      .pipe(take(1)).subscribe({next: (data) => {
+        this.moduleData = data;
+        this.networkProviders = this.moduleData.map(
+          (data: any) => data.operator
+        );
+      },
+      error: (error) => {
+      }
+    });
+  }
+
+  getNetworkProviders(value) {
+    return this.countryData[value]?.operators;
+  }
+
+  setForm(country) {
+    console.log('[setForm(country)]', country);
+    this.maxLength = this.getMaxLength(country);
+    this.placeHolder = country.value === 'BJ' ? '96040522' : '0544990518';
+    // this.transferForm.get("phone_no")?.setValue(this.dailingCode);
+
+    if (country === 'BJ') {
+      this.networkProviders = this.networkProviders.filter(
+        (provider) => provider !== 'vodafone' && provider !== 'airtel-tigo'
+      );
+    }
+    if (country === 'GH') {
+      this.form.get('operator').setValue('mtn');
+    }
+  }
+
+  getMaxLength(country) {
+    if (country === 'BJ') {
+      return 8;
+    } else {
+      return 10;
+    }
+  }
 
   isValidePhoneInput(phoneNumber: string) {
     if (phoneNumber === undefined) {
@@ -58,7 +137,7 @@ export class ProceedCashOutComponent implements OnInit {
     }
   }
 
-    // onProceed(form: NgForm) {
+  // onProceed(form: NgForm) {
   //   const telInputPlaceholderInputValue = document
   //     .getElementsByTagName('input')[0]
   //     .getAttribute('placeholder');
@@ -110,6 +189,30 @@ export class ProceedCashOutComponent implements OnInit {
   // }
 
   onProceedCashOut() {
-    this.router.navigate(['allow']);
+    this.collectionData= {
+      phone_no: this.form.value['phone_no'],
+      operator: this.form.value['operator'],
+      currency: this.businessTransactionData.currency,
+      country: this.businessTransactionData.country,
+      amount: this.businessTransactionData.amount,
+      user_id: this.businessTransactionData.user_id
+    };
+
+    sessionStorage.setItem(COLLECTION_DATA_KEY, JSON.stringify(this.collectionData));
+
+    const provider = this.form.value['operator'];
+    if (this.businessTransactionData.country === 'GH') {
+      switch (provider) {
+        case 'mtn':
+          this.router.navigate(['mtn']);
+          break;
+        case 'vodafone':
+          this.router.navigate(['vodafone']);
+          break;
+        case 'airtel-tigo':
+          this.router.navigate(['airtel']);
+          break;
+      }
+    }
   }
 }

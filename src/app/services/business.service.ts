@@ -39,6 +39,24 @@ export class BusinessService {
     );
   }
 
+  getModulesData(credentials): Observable<any> {
+    const url = `${environment.baseUrl}/getmodulesdata`;
+    // const url = 'http://127.0.0.1:8000/api/getmodulesdata';
+    const headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${credentials}`,
+    });
+    return this.http.get(url, { headers: headers }).pipe(
+      map((response) => {
+        return response["data"];
+      }),
+      catchError((error: HttpErrorResponse) => {
+        console.error("Error: ", error.message);
+        return observableThrowError(error);
+      })
+    );
+  }
+
   getClientDetails(getmomoclientdata, credentials) {
     const url = `${environment.baseUrl}/getmomoclientdata`;
     const params = new HttpParams()
