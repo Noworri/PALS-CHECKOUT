@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header [businessData] = "businessData" [businessLogo]="businessData.business_logo"></app-header>
 <!-- <ul class="list-group">
   <button class="btn btn-primary btn-sm mobile-cancel" type="submit">
     Cancel payement
@@ -9,9 +9,10 @@
   <div class="card border-success mb-3" style="width: 20rem">
     <div class="card-header bg-transparent border-dashed">
       <strong>
-        {{ businessTransactionData?.amount || 00.0 }}
-        <span> {{ businessTransactionData?.currency }}</span></strong
-      >
+        {{ businessTransactionData?.amount || 00.00 }}
+        <span>        {{ businessTransactionData?.currency }}
+        </span>
+      </strong>
     </div>
     <div class="card-body">
       <h5 class="card-title">

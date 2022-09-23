@@ -1,10 +1,13 @@
-<app-header></app-header>
+<app-header [businessData] = "businessData" [businessLogo]="businessData.business_logo"></app-header>
 
 <div id="card">
   <div class="card border-success mb-3" style="max-width: 20rem">
     <div class="card-header bg-transparent border-dashed">
-      <strong>{{ collectionData?.amount }}<span>{{ collectionData?.currency }}</span> </strong>
-      <p>You're paying with {{ collectionData?.operator.toUpperCase() }} - {{ collectionData?.phone_no }}</p>
+      <strong>
+        {{ businessTransactionData?.amount || 00.00 }}
+        <span>        {{ businessTransactionData?.currency }}
+        </span>
+      </strong>      <p>You're paying with {{ collectionData?.operator.toUpperCase() }} - {{ collectionData?.phone_no }}</p>
     </div>
 
     <div class="card-body">

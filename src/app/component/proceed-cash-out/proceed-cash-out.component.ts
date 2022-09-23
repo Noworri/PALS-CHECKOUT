@@ -41,6 +41,7 @@ export class ProceedCashOutComponent implements OnInit {
   moduleData: any;
   credentials: string;
   collectionData: CollectionData;
+  loadedBusinessData:BusinessTransactionData;
 
   constructor(
     private router: Router,
@@ -51,14 +52,22 @@ export class ProceedCashOutComponent implements OnInit {
     const sessionData = sessionStorage.getItem(BUSINESS_DATA_KEY);
     this.businessData =
       sessionData === null ? undefined : JSON.parse(sessionData);
+      console.log('[sessionData]', sessionData);
+  }
+
+  ngOnInit(): void {
+    console.log('[this.loadedBusinessData]', this.loadedBusinessData);
+    if (!this.loadedBusinessData) {
+      this.getUrlParams(window.location.href);
+    } else {
+      this.businessData = this.loadedBusinessData;
+    }
     const transferData = sessionStorage.getItem(TRANSFER_DATA_KEY);
+    console.log('[transferData]', transferData);
     this.businessTransactionData =
       transferData === null ? undefined : JSON.parse(transferData);
       this.networkProviders = this.countryData['GH'].operators
 
-  }
-
-  ngOnInit(): void {
     if(this.businessData) {
       this.credentials = `${this.businessData.api_secret_key_live}:${this.businessData.api_public_key_live}`;
     // this.getModulesData(this.credentials);
@@ -82,6 +91,16 @@ export class ProceedCashOutComponent implements OnInit {
 
   }
 
+  getSplitedAmount(num) {
+    if (Number.isInteger(num)) {
+      return [num, Number('00')];
+    }
+  
+    const decimalStr = num.toString().split('.')[1];
+    const intStr = num.toString().split('.')[0];
+    return [Number(intStr), parseFloat(Number(decimalStr).toFixed(2))];
+  }
+
   getModulesData(credentials) {
     this.businessService
       .getModulesData(credentials)
@@ -101,7 +120,6 @@ export class ProceedCashOutComponent implements OnInit {
   }
 
   setForm(country) {
-    console.log('[setForm(country)]', country);
     this.maxLength = this.getMaxLength(country);
     this.placeHolder = country.value === 'BJ' ? '96040522' : '0544990518';
     // this.transferForm.get("phone_no")?.setValue(this.dailingCode);
@@ -188,6 +206,47 @@ export class ProceedCashOutComponent implements OnInit {
   //   }
   // }
 
+  getBusinessData() {
+    this.businessService
+      .getBusinessDetails(this.businessTransactionData?.user_id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((businessData) => {
+        this.businessData = businessData;
+        this.businessLogo =
+          this.businessData.business_logo === null
+            ? 'assets/checkout/profilPhotoAnimation.gif'
+            : `https://noworri.com/api/public/uploads/company/business/${this.businessData.business_logo}`;
+
+        sessionStorage.setItem(
+          BUSINESS_DATA_KEY,
+          JSON.stringify(this.businessData)
+        );
+      });
+  }
+
+  getUrlParams(url: string) {
+    const params = new URL(url).searchParams;
+    this.route.queryParams.subscribe((params) => {
+      this.user_api_key = params['credentials'];
+      this.cancelUrl = params['cancel_url'];
+      this.businessTransactionData = {
+        user_id: params['user_id'],
+        apiKey: this.user_api_key,
+        currency: params['currency'],
+        amount: +params['amount'],
+        splitedAmount: this.getSplitedAmount(+params['amount']),
+        callback_url: params['callback_url'],
+        cancel_url: params['cancel_url'],
+        order_id: params['order_id'],
+        country: params['country'],
+      };
+    });
+    sessionStorage.setItem(
+      TRANSFER_DATA_KEY,
+      JSON.stringify(this.businessTransactionData)
+    );
+    this.getBusinessData();
+  }
   onProceedCashOut() {
     this.collectionData= {
       phone_no: this.form.value['phone_no'],

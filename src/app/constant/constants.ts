@@ -51,6 +51,7 @@ export const  COUNTRY_DATA = {
 export interface   BusinessTransactionData {
     user_id: string;
     amount: number;
+    splitedAmount:number[];
     currency: string;
     callback_url: string;
     cancel_url: string;

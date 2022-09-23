@@ -1,15 +1,14 @@
-<div class="header">
-  <div>
-    <img src="assets\images\logo.png" alt="" />
-    <span>Federal Landscaping</span>
-  </div>
-</div>
+<app-header [businessData] = "businessData" [businessLogo]="businessData.business_logo"></app-header>
+
 
 <div id="card">
   <div class="card border-success mb-3" style="max-width: 20rem">
     <div class="card-header bg-transparent border-dashed">
-      <strong>$1,820.<span>00</span> </strong>
-      <p>You're paying with AirtelTigo - 0586550200</p>
+      <strong>
+        {{ businessTransactionData?.amount || 00.00 }}
+        <span>        {{ businessTransactionData?.currency }}
+        </span>
+      </strong>      <p>You're paying with AirtelTigo - {{ collectionData?.phone_no }}</p>
     </div>
 
     <div class="card-body">
