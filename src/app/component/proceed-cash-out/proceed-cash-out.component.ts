@@ -32,7 +32,7 @@ export class ProceedCashOutComponent implements OnInit {
   isValidInputType: boolean;
   businessData: any;
   businessLogo: string;
-  phoneNumberValidationPattern = /^[0-9]{0,15}$/;
+  phoneNumberValidationPattern = /^\d*\d*$/;
   networkProviders: any[];
   maxLength: number;
   placeHolder: string;
@@ -52,18 +52,15 @@ export class ProceedCashOutComponent implements OnInit {
     const sessionData = sessionStorage.getItem(BUSINESS_DATA_KEY);
     this.businessData =
       sessionData === null ? undefined : JSON.parse(sessionData);
-      console.log('[sessionData]', sessionData);
   }
 
   ngOnInit(): void {
-    console.log('[this.loadedBusinessData]', this.loadedBusinessData);
     if (!this.loadedBusinessData) {
       this.getUrlParams(window.location.href);
     } else {
       this.businessData = this.loadedBusinessData;
     }
     const transferData = sessionStorage.getItem(TRANSFER_DATA_KEY);
-    console.log('[transferData]', transferData);
     this.businessTransactionData =
       transferData === null ? undefined : JSON.parse(transferData);
       this.networkProviders = this.countryData['GH'].operators
@@ -78,9 +75,8 @@ export class ProceedCashOutComponent implements OnInit {
       phone_no: [
         '',
         [
-          // Validators.pattern(this.phoneNumberValidationPattern),
+          Validators.pattern(this.phoneNumberValidationPattern),
           Validators.required,
-          Validators.min(8),
         ],
       ],
     });
@@ -272,6 +268,12 @@ export class ProceedCashOutComponent implements OnInit {
           this.router.navigate(['airtel']);
           break;
       }
+    }
+  }
+
+  onCancelPayment() {
+    if(this.businessTransactionData.cancel_url) {
+      window.location.href = this.businessTransactionData.cancel_url;
     }
   }
 }

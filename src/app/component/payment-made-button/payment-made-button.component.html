@@ -1,0 +1,18 @@
+<app-loading-spinner [showSpinner]="isVerifying"></app-loading-spinner>
+
+<ol class="list-group list-group">
+  <li class="list-group-item">
+    After you authorize the payment with your PIN click on this bottom for
+    your payment to be verified
+  </li>
+</ol>
+
+<h5 class="card-title">
+  <i class="bi bi-caret-down-fill"></i>
+  <div class="container">
+    <div class="d-grid gap-2">
+      <button class="btn" (click)="verifyCollection()" type="button">PAYMENT MADE</button>
+    </div>
+  </div>
+  <span><i class="bi bi-arrow-right-short"></i></span>
+</h5>

@@ -101,4 +101,22 @@ export class BusinessService {
       })
     );
   }
+
+  verifyCollection(data, credentials) {
+    const url = `${environment.baseUrl}/checkcollectionstatus`;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${credentials}`,
+      'Content-Type': 'application/json',
+    });
+    return this.http.post(url, data, { headers: headers }).pipe(
+      map((response) => {
+        return response;
+      }),
+
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error:', error.message);
+        return observableThrowError(error);
+      })
+    );
+  }
 }

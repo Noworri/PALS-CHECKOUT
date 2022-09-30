@@ -5,7 +5,7 @@
   </button>
 </ul> -->
 <div id="card">
-  <span> <i class="bi bi-x-circle"></i></span>
+  <span> <i  (click)="onCancelPayment()" class="bi bi-x-circle"></i></span>
   <div class="card border-success mb-3" style="width: 20rem">
     <div class="card-header bg-transparent border-dashed">
       <strong>
@@ -43,10 +43,11 @@
               <input
                 formControlName="phone_no"
                 type="tel"
-                pattern="/d*"
                 class="form-control"
                 id="exampleInputEmail1"
                 [placeholder]="placeHolder"
+                [maxlength]="maxLength"
+                minlength="8"
                 required
               />
             </div>
@@ -54,7 +55,7 @@
             <div class="mb-3 form-check"></div>
           </form>
           <div class="d-grid gap-2">
-            <button (click)="onProceedCashOut()" class="btn" type="button">
+            <button (click)="onProceedCashOut()" [disabled]="form.invalid" class="btn" type="button">
               PROCEED
             </button>
           </div>

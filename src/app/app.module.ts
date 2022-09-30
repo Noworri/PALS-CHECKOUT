@@ -16,6 +16,8 @@ import { MtnViewComponent } from './component/mtn-view/mtn-view.component';
 import { PalLogoComponent } from './common/pal-logo/pal-logo.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { PaymentMadeButtonComponent } from './component/payment-made-button/payment-made-button.component';
+import { LoadingSpinnerComponent } from './common/loading-spinner/loading-spinner.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +30,8 @@ import { HttpClientModule } from '@angular/common/http';
     VodaphoneViewComponent,
     MtnViewComponent,
     PalLogoComponent,
+    PaymentMadeButtonComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,

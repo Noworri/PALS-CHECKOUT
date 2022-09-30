@@ -14,13 +14,13 @@ export class MtnViewComponent implements OnInit {
   constructor() { 
     const sessionData = sessionStorage.getItem(BUSINESS_DATA_KEY);
     this.businessData =
-      sessionData === 'NULL' ? undefined : JSON.parse(sessionData);
+      sessionData === null ? undefined : JSON.parse(sessionData);
     const transferData = sessionStorage.getItem(TRANSFER_DATA_KEY);
     this.businessTransactionData =
-      transferData === 'NULL' ? undefined : JSON.parse(transferData);
+      transferData === null ? undefined : JSON.parse(transferData);
       const collectionData = sessionStorage.getItem(COLLECTION_DATA_KEY);
       this.collectionData =
-        collectionData === 'NULL' ? undefined : JSON.parse(collectionData);
+        collectionData === null ? undefined : JSON.parse(collectionData);
   }
 
   ngOnInit(): void {

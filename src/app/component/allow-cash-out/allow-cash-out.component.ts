@@ -21,10 +21,10 @@ export class AllowCashOutComponent implements OnInit {
       console.log('[sessionData]', sessionData);
       const transferData = sessionStorage.getItem(TRANSFER_DATA_KEY);
       this.businessTransactionData =
-        transferData === 'NULL' ? undefined : JSON.parse(transferData);
+        transferData === null ? undefined : JSON.parse(transferData);
         const collectionData = sessionStorage.getItem(COLLECTION_DATA_KEY);
         this.collectionData =
-          collectionData === 'NULL' ? undefined : JSON.parse(collectionData);
+          collectionData === null ? undefined : JSON.parse(collectionData);
   }
 
   ngOnInit(): void {}
