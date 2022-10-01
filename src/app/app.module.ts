@@ -16,8 +16,9 @@ import { MtnViewComponent } from './component/mtn-view/mtn-view.component';
 import { PalLogoComponent } from './common/pal-logo/pal-logo.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { PaymentMadeButtonComponent } from './component/payment-made-button/payment-made-button.component';
+import { PaymentMadeButtonComponent } from './common/payment-made-button/payment-made-button.component';
 import { LoadingSpinnerComponent } from './common/loading-spinner/loading-spinner.component';
+import { SuccessfulCollectionComponent } from './component/successful-collection/successful-collection.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +32,8 @@ import { LoadingSpinnerComponent } from './common/loading-spinner/loading-spinne
     MtnViewComponent,
     PalLogoComponent,
     PaymentMadeButtonComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    SuccessfulCollectionComponent
   ],
   imports: [
     BrowserModule,

@@ -4,6 +4,7 @@ import { AirteltigoViewComponent } from './component/airteltigo-view/airteltigo-
 import { AllowCashOutComponent } from './component/allow-cash-out/allow-cash-out.component';
 import { MtnViewComponent } from './component/mtn-view/mtn-view.component';
 import { ProceedCashOutComponent } from './component/proceed-cash-out/proceed-cash-out.component';
+import { SuccessfulCollectionComponent } from './component/successful-collection/successful-collection.component';
 import { UnsuccesfullTransactionComponent } from './component/unsuccesfull-transaction/unsuccesfull-transaction.component';
 import { VodaphoneViewComponent } from './component/vodaphone-view/vodaphone-view.component';
 
@@ -34,9 +35,13 @@ const routes: Routes = [
     component: MtnViewComponent,
   },
   {
-    path: 'unsuccesfull',
+    path: 'unsuccesful',
     component: UnsuccesfullTransactionComponent,
   },
+  {
+    path: 'successful',
+    component: SuccessfulCollectionComponent
+  }
 ];
 
 @NgModule({

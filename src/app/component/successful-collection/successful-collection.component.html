@@ -7,13 +7,16 @@
     <div class="card-header bg-transparent border-dashed">
       <strong>{{ businessTransactionData?.amount }}<span>{{ businessTransactionData?.currency }}</span> </strong>
       <p>You're trying to pay with {{ collectionData?.operator }} - {{ collectionData?.phone_no}}</p>
-      <!-- <span id="boot-icon" class="bi bi-x-circle"></span> -->
-
     </div>
     <div class="card-body">
       <h5 class="card-title">
         <div class="container">
-          <p>Payment verification failed, kindly retry</p>
+          <p>Payment verification successfull, kindly retry</p>
+          <br/>
+          <p *ngIf="transferData?.callback_url">You are about to be redirected be redirected ...</p>
+
+          <!-- <span id="boot-icon" class="bi bi-check-circle" style="font-size: 10rem; color: rgb(25, 184, 86);"></span> -->
+
           <div class="d-grid gap-2">
             <button class="btn" type="button" (click)="onRetryPayement()">
               RETRY PAYEMENT

@@ -53,10 +53,10 @@ export class PaymentMadeButtonComponent implements OnInit, OnDestroy {
         (response) => {
           if (response && response['status'] === true) {
             if (this.transferData.callback_url) {
-              window.location.href = this.transferData.callback_url;
+              this.router.navigate(['/successful'])
             }
           } else {
-            this.router.navigate(['/unsuccesfull']);
+            this.router.navigate(['/unsuccesful']);
           }
         },
         (error) => {
