@@ -259,9 +259,10 @@ export class ProceedCashOutComponent implements OnInit {
     if (this.businessTransactionData.country === 'GH') {
       switch (provider) {
         case 'mtn':
-          this.router.navigate(['mtn']);
+          this.router.navigate(['allow']);
           break;
         case 'vodafone':
+          this.createCollection();
           this.router.navigate(['vodafone']);
           break;
         case 'airtel-tigo':
@@ -275,5 +276,21 @@ export class ProceedCashOutComponent implements OnInit {
     if(this.businessTransactionData.cancel_url) {
       window.location.href = this.businessTransactionData.cancel_url;
     }
+  }
+
+  createCollection() {
+    this.businessService
+      .createCollection(this.collectionData, this.credentials)
+      .pipe(take(1))
+      .subscribe(
+        (response) => {
+          if (response && response['status'] === true) {
+            // TO DO
+          }
+        },
+        (error) => {
+          // TO DO
+        }
+      );
   }
 }

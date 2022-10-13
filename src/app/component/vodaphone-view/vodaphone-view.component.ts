@@ -14,7 +14,6 @@ export class VodaphoneViewComponent implements OnInit {
   constructor() {  const sessionData = sessionStorage.getItem(BUSINESS_DATA_KEY);
     this.businessData =
       sessionData === null ? undefined : JSON.parse(sessionData);
-      console.log('[sessionData]', sessionData);
       const transferData = sessionStorage.getItem(TRANSFER_DATA_KEY);
       this.businessTransactionData =
         transferData === null ? undefined : JSON.parse(transferData);

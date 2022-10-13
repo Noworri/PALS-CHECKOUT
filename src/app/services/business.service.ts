@@ -88,9 +88,13 @@ export class BusinessService {
     );
   }
 
-  createtransfer(data) {
-    const url = `${environment.baseUrl}/createtransfer`;
-    return this.http.post(url, data).pipe(
+  createCollection(data, credentials) {
+    const url = `${environment.baseUrl}/collectmomo`;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${credentials}`,
+      'Content-Type': 'application/json',
+    });
+    return this.http.post(url, data, { headers: headers }).pipe(
       map((response) => {
         return response;
       }),
@@ -119,4 +123,21 @@ export class BusinessService {
       })
     );
   }
-}
+
+  verifyCollectionStatus(data, credentials) {
+    const url = `${environment.baseUrl}/verifycollectionstatus`;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${credentials}`,
+      'Content-Type': 'application/json',
+    });
+    return this.http.post(url, data, { headers: headers }).pipe(
+      map((response) => {
+        return response;
+      }),
+
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error:', error.message);
+        return observableThrowError(error);
+      })
+    );
+  }}
