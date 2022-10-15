@@ -1,6 +1,7 @@
 <div class="header">
   <div>
-    <img [src]="businessData?.business_logo"/>
+    <img *ngIf="businessData?.business_logo" [src]="businessData?.business_logo"/>
+    <i *ngIf="!businessData?.business_logo" class="bi bi-briefcase"></i>
     <span>    {{ businessData?.business_legal_name }}</span>
   </div>
 </div>

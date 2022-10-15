@@ -41,7 +41,7 @@ export class ProceedCashOutComponent implements OnInit {
   moduleData: any;
   credentials: string;
   collectionData: CollectionData;
-  loadedBusinessData:BusinessTransactionData;
+  loadedBusinessData: BusinessTransactionData;
 
   constructor(
     private router: Router,
@@ -63,11 +63,11 @@ export class ProceedCashOutComponent implements OnInit {
     const transferData = sessionStorage.getItem(TRANSFER_DATA_KEY);
     this.businessTransactionData =
       transferData === null ? undefined : JSON.parse(transferData);
-      this.networkProviders = this.countryData['GH'].operators
+    this.networkProviders = this.countryData['GH'].operators;
 
-    if(this.businessData) {
+    if (this.businessData) {
       this.credentials = `${this.businessData.api_secret_key_live}:${this.businessData.api_public_key_live}`;
-    // this.getModulesData(this.credentials);
+      // this.getModulesData(this.credentials);
     }
 
     this.form = this.formBuilder.group({
@@ -84,14 +84,13 @@ export class ProceedCashOutComponent implements OnInit {
     if (this.businessTransactionData?.country) {
       this.setForm(this.businessTransactionData?.country);
     }
-
   }
 
   getSplitedAmount(num) {
     if (Number.isInteger(num)) {
       return [num, Number('00')];
     }
-  
+
     const decimalStr = num.toString().split('.')[1];
     const intStr = num.toString().split('.')[0];
     return [Number(intStr), parseFloat(Number(decimalStr).toFixed(2))];
@@ -100,15 +99,16 @@ export class ProceedCashOutComponent implements OnInit {
   getModulesData(credentials) {
     this.businessService
       .getModulesData(credentials)
-      .pipe(take(1)).subscribe({next: (data) => {
-        this.moduleData = data;
-        this.networkProviders = this.moduleData.map(
-          (data: any) => data.operator
-        );
-      },
-      error: (error) => {
-      }
-    });
+      .pipe(take(1))
+      .subscribe({
+        next: (data) => {
+          this.moduleData = data;
+          this.networkProviders = this.moduleData.map(
+            (data: any) => data.operator
+          );
+        },
+        error: (error) => {},
+      });
   }
 
   getNetworkProviders(value) {
@@ -244,16 +244,19 @@ export class ProceedCashOutComponent implements OnInit {
     this.getBusinessData();
   }
   onProceedCashOut() {
-    this.collectionData= {
+    this.collectionData = {
       phone_no: this.form.value['phone_no'],
       operator: this.form.value['operator'],
       currency: this.businessTransactionData.currency,
       country: this.businessTransactionData.country,
       amount: this.businessTransactionData.amount,
-      user_id: this.businessTransactionData.user_id
+      user_id: this.businessTransactionData.user_id,
     };
 
-    sessionStorage.setItem(COLLECTION_DATA_KEY, JSON.stringify(this.collectionData));
+    sessionStorage.setItem(
+      COLLECTION_DATA_KEY,
+      JSON.stringify(this.collectionData)
+    );
 
     const provider = this.form.value['operator'];
     if (this.businessTransactionData.country === 'GH') {
@@ -262,30 +265,36 @@ export class ProceedCashOutComponent implements OnInit {
           this.router.navigate(['allow']);
           break;
         case 'vodafone':
-          this.createCollection();
-          this.router.navigate(['vodafone']);
+          this.createCollection(provider);
           break;
         case 'airtel-tigo':
-          this.router.navigate(['airtel']);
+          this.createCollection(provider);
           break;
       }
     }
   }
 
   onCancelPayment() {
-    if(this.businessTransactionData.cancel_url) {
+    if (this.businessTransactionData.cancel_url) {
       window.location.href = this.businessTransactionData.cancel_url;
     }
   }
 
-  createCollection() {
+  createCollection(provider) {
     this.businessService
       .createCollection(this.collectionData, this.credentials)
       .pipe(take(1))
       .subscribe(
         (response) => {
           if (response && response['status'] === true) {
-            // TO DO
+            switch (provider) {
+              case 'vodafone':
+                this.router.navigate(['vodafone']);
+                break;
+              case 'airtel-tigo':
+                this.router.navigate(['airtel']);
+                break;
+            }
           }
         },
         (error) => {

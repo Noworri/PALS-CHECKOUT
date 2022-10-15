@@ -15,6 +15,9 @@ import { BusinessService } from 'src/app/services/business.service';
 })
 export class PaymentMadeButtonComponent implements OnInit, OnDestroy {
   unsubscribeAll = new Subject();
+  count = 0;
+  maxCount = 20;
+
   collectionData: any;
   transferData: any;
   isVerifying = false;
@@ -37,6 +40,7 @@ export class PaymentMadeButtonComponent implements OnInit, OnDestroy {
       this.credentials = `${this.businessData.api_secret_key_live}:${this.businessData.api_public_key_live}`;
       // this.getModulesData(this.credentials);
     }
+    this.verifyCollection();
   }
 
   ngOnDestroy(): void {
@@ -47,16 +51,27 @@ export class PaymentMadeButtonComponent implements OnInit, OnDestroy {
   verifyCollection() {
     this.isVerifying = true;
     this.service
-      .verifyCollection(this.collectionData, this.credentials)
+      .verifyCollectionStatus(this.collectionData, this.credentials)
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(
         (response) => {
           if (response && response['status'] === true) {
-            if (this.transferData.callback_url) {
-              this.router.navigate(['/successful'])
-            }
+            this.router.navigate(['/successful'])
+            // if (!this.businessTransactionData.callback_url) {
+            //   this.router.navigate(['/successful'])
+            // } else {
+            //   window.location.href = this.businessTransactionData.callback_url;
+            // }
           } else {
-            this.router.navigate(['/unsuccesful']);
+            if(this.count < this.maxCount) {
+              this.count++;
+              setTimeout(() => {
+                this.verifyCollection();
+              }, 5000)
+            } else {
+              this.router.navigate(['/unsuccessfull']);
+            }
+           
           }
         },
         (error) => {
@@ -64,4 +79,5 @@ export class PaymentMadeButtonComponent implements OnInit, OnDestroy {
         }
       );
   }
+
 }
