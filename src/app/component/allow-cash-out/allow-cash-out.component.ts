@@ -45,7 +45,7 @@ export class AllowCashOutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.unsubscribeAll.next(true);
-    this,this.unsubscribeAll.complete();
+    this.unsubscribeAll.complete();
   }
 
   onAllowCashout() {
@@ -81,6 +81,8 @@ export class AllowCashOutComponent implements OnInit, OnDestroy {
       .subscribe(
         (response) => {
           if (response && response['status'] === true) {
+            const collection = {...this.collectionData, verified: response['status']}
+            sessionStorage.setItem(COLLECTION_DATA_KEY, JSON.stringify(collection))
             this.router.navigate(['/mtn'])
             // if (!this.businessTransactionData.callback_url) {
             //   this.router.navigate(['/successful'])

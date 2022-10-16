@@ -27,10 +27,7 @@
             <span>Loading</span>
           </div>
           <div class="d-grid gap-2">
-            <button class="btn" (click)="createCollection()" type="button">
-
-
-
+            <button class="btn" (click)="createCollection()" [disabled]="isVerifiying" type="button">
               I've allowed cash out
             </button>
           </div>

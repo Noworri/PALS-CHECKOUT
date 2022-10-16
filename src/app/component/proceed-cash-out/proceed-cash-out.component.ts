@@ -55,11 +55,14 @@ export class ProceedCashOutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!this.loadedBusinessData) {
-      this.getUrlParams(window.location.href);
-    } else {
-      this.businessData = this.loadedBusinessData;
-    }
+    sessionStorage.clear();
+    this.getUrlParams(window.location.href);
+
+    // if (!this.loadedBusinessData) {
+    //   this.getUrlParams(window.location.href);
+    // } else {
+    //   this.businessData = this.loadedBusinessData;
+    // }
     const transferData = sessionStorage.getItem(TRANSFER_DATA_KEY);
     this.businessTransactionData =
       transferData === null ? undefined : JSON.parse(transferData);

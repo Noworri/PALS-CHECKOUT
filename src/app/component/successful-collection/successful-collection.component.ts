@@ -32,7 +32,7 @@ export class SuccessfulCollectionComponent implements OnInit {
     if (this.businessTransactionData.callback_url) {
       setTimeout(() => {
         window.location.href = this.businessTransactionData.callback_url;
-      }, 5000);
+      }, 6000);
     }
   }
 
