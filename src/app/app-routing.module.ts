@@ -35,7 +35,7 @@ const routes: Routes = [
     component: MtnViewComponent,
   },
   {
-    path: 'unsuccesful',
+    path: 'unsuccessfull',
     component: UnsuccesfullTransactionComponent,
   },
   {
