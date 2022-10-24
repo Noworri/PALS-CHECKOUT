@@ -45,7 +45,7 @@ export class PaymentMadeButtonComponent implements OnInit, OnDestroy {
       !this.collectionData.verified ||
       this.collectionData.verified === false
     ) {
-      this.verifyCollection();
+      this.checkCollectionCompletion();
     }
   }
 
@@ -54,7 +54,7 @@ export class PaymentMadeButtonComponent implements OnInit, OnDestroy {
     this.unsubscribeAll.complete();
   }
 
-  verifyCollection(clicked = false) {
+  checkCollectionCompletion(clicked = false) {
     if (
       !this.collectionData.verified ||
       this.collectionData.verified === false
@@ -62,11 +62,15 @@ export class PaymentMadeButtonComponent implements OnInit, OnDestroy {
       this.isClickedToVerify = clicked;
       this.isVerifying = true;
       this.service
-        .checkCollectionCompletion(this.collectionData.reference, this.credentials)
+        .checkCollectionCompletion(
+          this.collectionData.reference,
+          this.credentials
+        )
         .pipe(takeUntil(this.unsubscribeAll))
         .subscribe(
           (response) => {
             if (response && response['status'] === true) {
+              this.isClickedToVerify = false;
               const collection = {
                 ...this.collectionData,
                 verified: response['status'],
@@ -82,12 +86,10 @@ export class PaymentMadeButtonComponent implements OnInit, OnDestroy {
               //   window.location.href = this.businessTransactionData.callback_url;
               // }
             } else {
-              if (!clicked || clicked !== true) {
-                this.router.navigate(['/unsuccessfull']);
-              } else if (this.count < this.maxCount) {
+              if (this.count < this.maxCount) {
                 this.count++;
                 setTimeout(() => {
-                  this.verifyCollection();
+                  this.checkCollectionCompletion();
                 }, 5000);
               } else {
                 this.router.navigate(['/unsuccessfull']);
