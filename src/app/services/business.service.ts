@@ -140,4 +140,23 @@ export class BusinessService {
         return observableThrowError(error);
       })
     );
-  }}
+  }
+
+  checkCollectionCompletion(reference, credentials) {
+    const url = `${environment.baseUrl}/checkcollectioncompletion/${reference}`;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${credentials}`,
+      'Content-Type': 'application/json',
+    });
+    return this.http.get(url, { headers: headers }).pipe(
+      map((response) => {
+        return response;
+      }),
+
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error:', error.message);
+        return observableThrowError(error);
+      })
+    );
+  }
+}

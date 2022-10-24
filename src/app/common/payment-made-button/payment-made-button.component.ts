@@ -23,6 +23,7 @@ export class PaymentMadeButtonComponent implements OnInit, OnDestroy {
   isVerifying = false;
   businessData: any;
   credentials: string;
+  isClickedToVerify: boolean = false;
   constructor(private service: BusinessService, private router: Router) {
     const collection = sessionStorage.getItem(COLLECTION_DATA_KEY);
     this.collectionData =
@@ -53,14 +54,15 @@ export class PaymentMadeButtonComponent implements OnInit, OnDestroy {
     this.unsubscribeAll.complete();
   }
 
-  verifyCollection() {
+  verifyCollection(clicked = false) {
     if (
       !this.collectionData.verified ||
       this.collectionData.verified === false
     ) {
+      this.isClickedToVerify = clicked;
       this.isVerifying = true;
       this.service
-        .verifyCollectionStatus(this.collectionData, this.credentials)
+        .checkCollectionCompletion(this.collectionData.reference, this.credentials)
         .pipe(takeUntil(this.unsubscribeAll))
         .subscribe(
           (response) => {
@@ -80,7 +82,9 @@ export class PaymentMadeButtonComponent implements OnInit, OnDestroy {
               //   window.location.href = this.businessTransactionData.callback_url;
               // }
             } else {
-              if (this.count < this.maxCount) {
+              if (!clicked || clicked !== true) {
+                this.router.navigate(['/unsuccessfull']);
+              } else if (this.count < this.maxCount) {
                 this.count++;
                 setTimeout(() => {
                   this.verifyCollection();

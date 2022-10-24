@@ -290,6 +290,8 @@ export class ProceedCashOutComponent implements OnInit {
       .subscribe(
         (response) => {
           if (response && response['status'] === true) {
+            const collection = {...this.collectionData, reference: response['data']['reference']};
+            sessionStorage.setItem(COLLECTION_DATA_KEY, JSON.stringify(collection));
             switch (provider) {
               case 'vodafone':
                 this.router.navigate(['vodafone']);
