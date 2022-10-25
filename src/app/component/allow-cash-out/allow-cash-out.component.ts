@@ -92,8 +92,7 @@ export class AllowCashOutComponent implements OnInit, OnDestroy {
           } else {
             if(response['error']) {
               this.router.navigate(['/unsuccessfull']);
-            }
-            if(this.count < this.maxCount) {
+            } else if(this.count < this.maxCount) {
               this.count++;
               setTimeout(() => {
                 this.verifyCollection();
