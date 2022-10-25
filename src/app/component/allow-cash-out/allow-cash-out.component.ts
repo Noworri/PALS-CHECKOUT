@@ -64,6 +64,9 @@ export class AllowCashOutComponent implements OnInit, OnDestroy {
       .subscribe(
         (response) => {
           if (response && response['status'] === true) {
+            const collection = {...this.collectionData, reference: response['data']['reference']};
+            this.collectionData['reference'] = response['data']['reference'];
+            sessionStorage.setItem(COLLECTION_DATA_KEY, JSON.stringify(collection));
             this.verifyCollection();
           }
         },
@@ -81,7 +84,7 @@ export class AllowCashOutComponent implements OnInit, OnDestroy {
       .subscribe(
         (response) => {
           if (response && response['status'] === true) {
-            const collection = {...this.collectionData, reference: response['data']['reference']};
+            const collection = {...this.collectionData, reference: ['reference']};
             sessionStorage.setItem(COLLECTION_DATA_KEY, JSON.stringify(collection));
             this.router.navigate(['/mtn']);
             // if (!this.businessTransactionData.callback_url) {
