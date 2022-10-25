@@ -124,13 +124,13 @@ export class BusinessService {
     );
   }
 
-  verifyCollectionStatus(data, credentials) {
-    const url = `${environment.baseUrl}/verifycollectionstatus`;
+  verifyCollectionStatus(reference, credentials) {
+    const url = `${environment.baseUrl}/verifycollectionstatus/${reference}`;
     const headers = new HttpHeaders({
       Authorization: `Bearer ${credentials}`,
       'Content-Type': 'application/json',
     });
-    return this.http.post(url, data, { headers: headers }).pipe(
+    return this.http.get(url, { headers: headers }).pipe(
       map((response) => {
         return response;
       }),

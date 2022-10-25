@@ -76,7 +76,7 @@ export class AllowCashOutComponent implements OnInit, OnDestroy {
   verifyCollection() {
     this.isVerifiying = true;
     this.service
-      .verifyCollectionStatus(this.collectionData, this.credentials)
+      .verifyCollectionStatus(this.collectionData?.reference, this.credentials)
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe(
         (response) => {
