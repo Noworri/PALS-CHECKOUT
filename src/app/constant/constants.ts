@@ -26,7 +26,7 @@ export const  COUNTRY_DATA = {
       operators: [
         { name: "MTN", value: "mtn" },
         { name: "VODAFONE", value: "vodafone" },
-        { name: "AIRTEL-TIGO", value: "airtel-tigo" },
+        // { name: "AIRTEL-TIGO", value: "airtel-tigo" },
       ],
     },
     TG: {
