@@ -50,8 +50,14 @@
             <h5 class="text-dark">
               ----> Agent number : <span>576240574</span>
               <span class="copy1"
-                ><i class="bi bi-clipboard2"></i>
-                <span class="copy2">Copy</span></span
+                >
+                <i class="bi bi-clipboard2"></i>
+                <span
+                placement="top"
+                ngbPopover="Copied!"
+                (click)="copyInputMessage('576240574')"
+              > {{ copyText }}
+            </span></span
               >
             </h5>
             <h6>Noworri financial technology</h6>

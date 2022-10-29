@@ -49,10 +49,18 @@
           </div>
           <div class="text-span">
             <h5 style="font-size:11px" class="text-dark">
-              ----> Till number : <span>G71249</span>
+              ----> Till number : <span>337998</span>
               <span class="copy1"
-                ><i class="bi bi-clipboard2"></i>
-                <span class="copy2">Copy</span></span
+                >
+                <i class="bi bi-clipboard2"></i>
+                <span
+                mat-icon-button
+                matSuffix
+                placement="top"
+                ngbPopover="Copied!"
+                (click)="copyInputMessage('337998')"
+                > {{ copyText }}
+              </span></span
               >
             </h5>
             <h6>Noworri financial technology</h6>

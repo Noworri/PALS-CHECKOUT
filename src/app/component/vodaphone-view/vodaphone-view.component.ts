@@ -10,6 +10,7 @@ export class VodaphoneViewComponent implements OnInit {
   businessData: any;
   businessTransactionData: any;
   collectionData: any;
+  copyText: string = 'Copy';
 
   constructor() {  const sessionData = sessionStorage.getItem(BUSINESS_DATA_KEY);
     this.businessData =
@@ -23,6 +24,20 @@ export class VodaphoneViewComponent implements OnInit {
     }
 
   ngOnInit(): void {
+  }
+  copyInputMessage(val) {
+    this.copyText = "Copied!";
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = val;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
   }
 
 }
