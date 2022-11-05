@@ -212,9 +212,9 @@ export class ProceedCashOutComponent implements OnInit {
       .subscribe((businessData) => {
         this.businessData = businessData;
         this.businessLogo =
-          this.businessData.business_logo === null
+          this.businessData?.business_logo === null
             ? 'assets/checkout/profilPhotoAnimation.gif'
-            : `https://noworri.com/api/public/uploads/company/business/${this.businessData.business_logo}`;
+            : `https://noworri.com/api/public/uploads/company/business/${this.businessData?.business_logo}`;
 
         sessionStorage.setItem(
           BUSINESS_DATA_KEY,
