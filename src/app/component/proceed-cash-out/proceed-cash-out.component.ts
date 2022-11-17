@@ -16,6 +16,7 @@ import {
   TRANSFER_DATA_KEY,
 } from 'src/app/constant/constants';
 import { BusinessService } from 'src/app/services/business.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-proceed-cash-out',
@@ -214,7 +215,7 @@ export class ProceedCashOutComponent implements OnInit {
         this.businessLogo =
           this.businessData?.business_logo === null
             ? 'assets/checkout/profilPhotoAnimation.gif'
-            : `https://noworri.com/api/public/uploads/company/business/${this.businessData?.business_logo}`;
+            : `${environment.baseUrl}/public/uploads/company/business/${this.businessData?.business_logo}`;
 
         sessionStorage.setItem(
           BUSINESS_DATA_KEY,

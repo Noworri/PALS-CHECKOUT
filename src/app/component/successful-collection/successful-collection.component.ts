@@ -31,7 +31,7 @@ export class SuccessfulCollectionComponent implements OnInit {
   ngOnInit() {
     if (this.businessTransactionData.callback_url) {
       setTimeout(() => {
-        window.location.href = this.businessTransactionData.callback_url;
+        window.location.href = `${this.businessTransactionData.callback_url}?reference=${this.collectionData.reference}&id=${this.collectionData.id}&phone_no=${this.collectionData.phone_no}`;
       }, 6000);
     }
   }
