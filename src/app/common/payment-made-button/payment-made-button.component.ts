@@ -89,7 +89,7 @@ export class PaymentMadeButtonComponent implements OnInit, OnDestroy {
               if (this.count < this.maxCount) {
                 this.count++;
                 setTimeout(() => {
-                  this.checkCollectionCompletion();
+                  this.checkCollectionCompletion(this.isClickedToVerify);
                 }, 5000);
               } else {
                 this.router.navigate(['/unsuccessfull']);
