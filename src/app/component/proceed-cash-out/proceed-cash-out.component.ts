@@ -215,8 +215,9 @@ export class ProceedCashOutComponent implements OnInit {
         this.businessLogo =
           this.businessData?.business_logo === null
             ? 'assets/checkout/profilPhotoAnimation.gif'
-            : `${environment.baseUrl}/public/uploads/company/business/${this.businessData?.business_logo}`;
+            : `https://api.pals.africa/public/uploads/company/business/${this.businessData?.business_logo}`;
 
+        this.businessData.business_logo = this.businessLogo;
         sessionStorage.setItem(
           BUSINESS_DATA_KEY,
           JSON.stringify(this.businessData)
