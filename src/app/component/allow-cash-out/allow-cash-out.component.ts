@@ -43,6 +43,12 @@ export class AllowCashOutComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {}
 
+  onCancelPayment() {
+    if (this.businessTransactionData.cancel_url) {
+      window.location.href = this.businessTransactionData.cancel_url;
+    }
+  }
+
   ngOnDestroy(): void {
     this.unsubscribeAll.next(true);
     this.unsubscribeAll.complete();
